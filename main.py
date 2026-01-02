@@ -10,11 +10,15 @@ import fp2_maintenance as fp2
 import fp3_sortants as fp3
 
 def main():
+    """
+    Fonction principale (Point d'entrée).
+    Orchestre le menu et la boucle principale du programme.
+    """
     # Définition du fichier de persistance
-    FICHIER_DB = Path("stock.txt")
+    fichier_db = Path("stock.txt")
     
     # 1. Chargement initial (FS-1.4)
-    entrepot = fp1.fs_1_4_charger_stock(FICHIER_DB)
+    entrepot = fp1.fs_1_4_charger_stock(fichier_db)
     
     boucle_active = True
     
@@ -23,10 +27,10 @@ def main():
         fp2.fs_2_3_afficher_etat_global(entrepot)
         
         print("MENU :")
-        print("1. [Entrée] Ajouter produits (ex: A1, B2)")
-        print("2. [Sortie] Préparer colis (ex: A1, A1)")
-        print("3. [Système] Sauvegarder")
-        print("4. [Système] Quitter")
+        print("1. [Entree] Ajouter produits (ex: A1, B2)")
+        print("2. [Sortie] Preparer colis (ex: A1, A1)")
+        print("3. [Systeme] Sauvegarder")
+        print("4. [Systeme] Quitter")
         
         choix = input("\nVotre choix > ")
         
@@ -40,14 +44,14 @@ def main():
             fp3.fs_3_1_preparer_colis(entrepot, liste_demandes)
             
         elif choix == "3":
-            fp1.fs_1_3_sauvegarder_stock(entrepot, FICHIER_DB)
+            fp1.fs_1_3_sauvegarder_stock(entrepot, fichier_db)
             
         elif choix == "4":
-            fp1.fs_1_3_sauvegarder_stock(entrepot, FICHIER_DB)
+            fp1.fs_1_3_sauvegarder_stock(entrepot, fichier_db)
             print("Au revoir !")
             boucle_active = False
         else:
-            print("Choix invalide.")
+            print("[ERREUR] Choix invalide.")
 
 if __name__ == "__main__":
     main()
