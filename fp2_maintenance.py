@@ -10,7 +10,7 @@ def fs_2_2_gerer_saturation_logistique(ent: dict) -> None:
     if len(ent["alertes"]) >= 3:
         # Suppression de l'alerte la plus ancienne (FIFO : index 0)
         removed = ent["alertes"].pop(0)
-        print(f"[LOG] Journal saturé : Suppression de l'alerte ancienne '{removed}'")
+        print(f"[LOG] Journal sature : Suppression de l'alerte ancienne '{removed}'")
 
 def fs_2_1_verifier_seuil_alerte(ent: dict, id_p: str) -> None:
     """
@@ -23,17 +23,17 @@ def fs_2_1_verifier_seuil_alerte(ent: dict, id_p: str) -> None:
     if quantite < 2 and id_p not in ent["alertes"]:
         fs_2_2_gerer_saturation_logistique(ent)
         ent["alertes"].append(id_p)
-        print(f"[ALERTE] Stock critique détecté sur {id_p} !")
+        print(f"[ALERTE] Stock critique detecte sur {id_p} !")
 
 def fs_2_3_afficher_etat_global(ent: dict) -> None:
     """
     VA: Offre une visibilité temps réel sur l'entrepôt pour l'opérateur.
     """
     print("\n" + "="*40)
-    print(f" STOCK ({len(ent['stock'])} réf) :")
+    print(f"[STOCK] ({len(ent['stock'])} ref) :")
     for k, v in ent["stock"].items():
-        print(f"   - {k} : {len(v)} unités")
+        print(f"   - {k} : {len(v)} unites")
         
-    print(f"\n  ALERTES ({len(ent['alertes'])}/3) : {ent['alertes']}")
-    print(f" BACKORDERS : {ent['backorders']}")
+    print(f"\n[ALERTES] ({len(ent['alertes'])}/3) : {ent['alertes']}")
+    print(f"[BACKORDERS] : {ent['backorders']}")
     print("="*40 + "\n")
