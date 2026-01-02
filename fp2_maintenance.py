@@ -30,10 +30,10 @@ def fs_2_3_afficher_etat_global(ent: dict) -> None:
     VA: Offre une visibilité temps réel sur l'entrepôt pour l'opérateur.
     """
     print("\n" + "="*40)
-    print(f"📦 STOCK ({len(ent['stock'])} réf) :")
+    print(f" STOCK ({len(ent['stock'])} réf) :")
     for k, v in ent["stock"].items():
         print(f"   - {k} : {len(v)} unités")
         
-    print(f"\n⚠️  ALERTES ({len(ent['alertes'])}/3) : {ent['alertes']}")
-    print(f"📋 BACKORDERS : {ent['backorders']}")
+    print(f"\n  ALERTES ({len(ent['alertes'])}/3) : {ent['alertes']}")
+    print(f" BACKORDERS : {ent['backorders']}")
     print("="*40 + "\n")
