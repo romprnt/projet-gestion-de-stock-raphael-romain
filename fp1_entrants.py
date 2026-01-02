@@ -12,12 +12,13 @@ def fs_1_4_charger_stock(path_fichier: Path) -> dict:
     ent = {"stock": {}, "alertes": [], "backorders": []}
     
     if not path_fichier.exists():
-        print("[INFO] Aucun fichier de sauvegarde trouvé. Démarrage à vide.")
+        print("[INFO] Aucun fichier de sauvegarde trouve. Demarrage a vide.")
         return ent
 
     try:
         content = path_fichier.read_text(encoding="utf-8").strip()
-        if not content: return ent
+        if not content:
+            return ent
             
         for line in content.splitlines():
             # Format attendu dans le fichier : ID:Quantité (ex: A1:5)
@@ -28,9 +29,10 @@ def fs_1_4_charger_stock(path_fichier: Path) -> dict:
             p_dict = {"type": id_p[0], "vol": int(id_p[1:])}
             ent["stock"][id_p] = [p_dict] * qte
             
-        print("[INFO] Données chargées avec succès.")
-    except Exception as e:
-        print(f"[ERREUR] Fichier corrompu : {e}")
+        print("[INFO] Donnees chargees avec succes.")
+    except (OSError, ValueError) as error:
+        # Correction W0703: On attrape les erreurs spécifiques Fichier ou Format
+        print(f"[ERREUR] Fichier corrompu ou illisible : {error}")
         
     return ent
 
@@ -38,10 +40,13 @@ def fs_1_3_sauvegarder_stock(ent: dict, path_fichier: Path) -> None:
     """
     VA: Assure la survie des données sur disque.
     """
-    # On sauvegarde sous la forme : CLE:QUANTITÉ
-    lignes = [f"{k}:{len(v)}" for k, v in ent["stock"].items() if v]
-    path_fichier.write_text("\n".join(lignes), encoding="utf-8")
-    print("[INFO] Sauvegarde effectuée.")
+    try:
+        # On sauvegarde sous la forme : CLE:QUANTITÉ
+        lignes = [f"{k}:{len(v)}" for k, v in ent["stock"].items() if v]
+        path_fichier.write_text("\n".join(lignes), encoding="utf-8")
+        print("[INFO] Sauvegarde effectuee.")
+    except OSError as error:
+        print(f"[ERREUR] Impossible d'ecrire le fichier : {error}")
 
 def fs_1_2_ajouter_un_produit(ent: dict, p: dict) -> None:
     """
@@ -66,11 +71,12 @@ def fs_1_1_parser_saisie_rapide(ent: dict, chaine: str) -> None:
     try:
         items = chaine.replace(" ", "").split(",")
         for item in items:
-            if not item: continue
+            if not item:
+                continue
             # Extraction
             p = {"type": item[0].upper(), "vol": int(item[1:])}
             # Appel interne
             fs_1_2_ajouter_un_produit(ent, p)
-        print(" Saisie traitée.")
+        print("[SUCCES] Saisie traitee.")
     except (ValueError, IndexError):
-        print(" Erreur de format. Utilisez : A1, B2")
+        print("[ERREUR] Format invalide. Utilisez : A1, B2")
