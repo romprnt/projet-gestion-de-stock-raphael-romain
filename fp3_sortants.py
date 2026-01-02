@@ -58,10 +58,10 @@ def fs_3_1_preparer_colis(ent: dict, demandes: List[str]) -> None:
                     # Cas 3 : Echec total -> Backorder
                     fs_3_3_enregistrer_backorder(ent, id_p)
             except:
-                print(f"❌ ID invalide détecté : {id_p}")
+                print(f" ID invalide détecté : {id_p}")
 
     # Finalisation : Tri du colis
     colis_final = fs_3_4_trier_colis_volume(colis_temporaire)
     
-    print(f"\n📦 COLIS PRÊT À L'EXPÉDITION ({len(colis_final)} articles) :")
+    print(f"\n COLIS PRÊT À L'EXPÉDITION ({len(colis_final)} articles) :")
     print([f"{p['type']}{p['vol']}" for p in colis_final])
